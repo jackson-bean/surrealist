@@ -15,6 +15,7 @@ import {
 import { useDebouncedValue, useInputState } from "@mantine/hooks";
 import { keepPreviousData, useQuery } from "@tanstack/react-query";
 import clsx from "clsx";
+import { useCallback } from "react";
 import { adapter } from "~/adapter";
 import { Entry } from "~/components/Entry";
 import { Icon } from "~/components/Icon";
@@ -23,6 +24,7 @@ import { useBoolean } from "~/hooks/boolean";
 import { useKeyNavigation } from "~/hooks/keys";
 import { useIntent } from "~/hooks/routing";
 import { useStable } from "~/hooks/stable";
+import { useDocs } from "~/providers/Docs";
 import { Y_SLIDE_TRANSITION } from "~/util/helpers";
 import { iconBook } from "~/util/icons";
 
@@ -38,6 +40,7 @@ interface Result {
 }
 
 export function DocumentationModal() {
+	const { openDocs } = useDocs();
 	const [isOpen, openHandle] = useBoolean();
 	const [search, setSearch] = useInputState("");
 
@@ -63,10 +66,16 @@ export function DocumentationModal() {
 		},
 	});
 
-	const openDocumentation = useStable((doc: Result) => {
+	// const openDocumentation = useStable((doc: Result) => {
+	// 	openHandle.close();
+	// 	adapter.openUrl(`https://surrealdb.com${doc.url}`);
+	// });
+
+	const openDocumentation = useCallback((doc: Result) => {
 		openHandle.close();
-		adapter.openUrl(`https://surrealdb.com${doc.url}`);
-	});
+
+		openDocs(doc.url);
+	}, [openDocs]);
 
 	const [handleKeyDown, selected] = useKeyNavigation(data ?? [], openDocumentation);
 

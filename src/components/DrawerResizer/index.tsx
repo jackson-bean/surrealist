@@ -10,9 +10,10 @@ export interface DrawerResizerProps {
 	minSize: number;
 	maxSize: number;
 	onResize: (width: number) => void;
+	onResizingChange?: (resizing: boolean) => void;
 }
 
-export function DrawerResizer({ minSize, maxSize, onResize }: DrawerResizerProps) {
+export function DrawerResizer({ minSize, maxSize, onResize, onResizingChange }: DrawerResizerProps) {
 	const [isResizing, setIsResizing] = useState(false);
 	const resizer = useRef<HTMLDivElement>(null);
 
@@ -41,6 +42,8 @@ export function DrawerResizer({ minSize, maxSize, onResize }: DrawerResizerProps
 			window.removeEventListener("mouseup", onMouseUp);
 
 			setIsResizing(false);
+			onResizingChange?.(false);
+
 			document.body.style.cursor = "";
 		};
 
@@ -51,6 +54,8 @@ export function DrawerResizer({ minSize, maxSize, onResize }: DrawerResizerProps
 			window.addEventListener("mouseup", onMouseUp);
 
 			setIsResizing(true);
+			onResizingChange?.(true);
+
 			document.body.style.cursor = "ew-resize";
 		});
 

@@ -23,9 +23,11 @@ import { AccessSignupModal } from "./modals/signup";
 import { TableCreatorModal } from "./modals/table";
 import { UpdaterDialog } from "./modals/updater";
 import { Settings } from "./settings";
+import { DocsProvider } from "~/providers/Docs";
 
 function Surrealist() {
 	return (
+		// <DocsProvider>
 		<InspectorProvider>
 			<DesignerProvider>
 				<SurrealistScreen />
@@ -37,31 +39,33 @@ function Surrealist() {
 export function App() {
 	return (
 		<Scaffold>
-			<Globals />
+			<DocsProvider>
+				<Globals />
 
-			<Surrealist />
+				<Surrealist />
 
-			<Settings />
+				<Settings />
 
-			<ConnectionsModal />
-			<CommandPaletteModal />
-			<DocumentationModal />
-			<ChangelogModal />
-			<ConnectionModal />
-			<DownloadModal />
-			<SandboxModal />
-			<AccessSignupModal />
-			<TableCreatorModal />
-			<HighlightToolModal />
-			<DataExportModal />
-			<DataImportModal />
-			<RegisterUserModal />
-			<ConsoleDrawer />
-			<NewsFeedDrawer />
-			<CloudExpiredDialog />
-			<ProvisioningDialog />
+				<ConnectionsModal />
+				<CommandPaletteModal />
+				<DocumentationModal />
+				<ChangelogModal />
+				<ConnectionModal />
+				<DownloadModal />
+				<SandboxModal />
+				<AccessSignupModal />
+				<TableCreatorModal />
+				<HighlightToolModal />
+				<DataExportModal />
+				<DataImportModal />
+				<RegisterUserModal />
+				<ConsoleDrawer />
+				<NewsFeedDrawer />
+				<CloudExpiredDialog />
+				<ProvisioningDialog />
 
-			{isDesktop && <UpdaterDialog />}
+				{isDesktop && <UpdaterDialog />}
+			</DocsProvider>
 		</Scaffold>
 	);
 }

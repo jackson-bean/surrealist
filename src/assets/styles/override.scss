@@ -39,6 +39,12 @@ body.mod .cm-record-link:hover {
 	}
 }
 
+body.mod .cm-doc-link:hover {
+	text-decoration: underline;
+	text-decoration-color: #ff009e;
+	cursor: pointer;
+}
+
 .mantine-contextmenu-item-button>div:not(.mantine-contextmenu-item-button-title) {
 	font-size: 0.65rem !important;
 }

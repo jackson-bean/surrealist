@@ -7,6 +7,7 @@ import {
 	surqlRecordLinks,
 	surqlTableCompletion,
 	surqlVariableCompletion,
+	surqlQuickDocs,
 } from "~/editor";
 
 import {
@@ -45,6 +46,7 @@ import type { QueryTab } from "~/types";
 import { extractVariables, showError, tryParseParams } from "~/util/helpers";
 import { formatQuery, formatValue } from "~/util/surrealql";
 import { readQuery, writeQuery } from "../QueryView/strategy";
+import { useDocs } from "~/providers/Docs";
 
 const SERIALIZE = {
 	history: historyField,
@@ -80,6 +82,7 @@ export function QueryPane({
 	const { updateQueryTab, updateConnection } = useConfigStore.getState();
 	const { updateQueryState, setQueryValid } = useQueryStore.getState();
 	const { inspect } = useInspector();
+	const { openDocs } = useDocs();
 	const [connection] = useConnectionAndView();
 	const queryTabList = useConnection((c) => c?.queryTabList);
 	const surqlVersion = useDatabaseVersionLinter(editor);
@@ -138,8 +141,8 @@ export function QueryPane({
 			const document = editor.state.doc;
 			const formatted = hasSelection
 				? document.sliceString(0, selection.from) +
-					formatQuery(document.sliceString(selection.from, selection.to)) +
-					document.sliceString(selection.to)
+				formatQuery(document.sliceString(selection.from, selection.to)) +
+				document.sliceString(selection.to)
 				: formatQuery(document.toString());
 
 			setEditorText(editor, formatted);
@@ -201,6 +204,9 @@ export function QueryPane({
 			surqlVersion,
 			surqlLinting(updateValid),
 			surqlRecordLinks(inspect),
+			surqlQuickDocs(path => {
+				openDocs(path);
+			}),
 			surqlTableCompletion(),
 			surqlVariableCompletion(resolveVariables),
 			surqlCustomFunctionCompletion(),
